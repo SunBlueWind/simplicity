@@ -1,0 +1,92 @@
+<% include ../partials/heading %>
+
+<div class='container'>
+    <div class='row text-center'>
+        <div class='col col-sm-3'>
+          <p class='status-heading'>To Do</p>
+            <% tasks.forEach(function(task) { %>
+              <% if (task.status === 'To Do' ) { %>
+                <div class='card mb-4 pt-2'>
+                  <h5 class="card-title"><%= task.name %></h5>
+                  <p class="card-text">Due: <%= formatDate(task.due) %></p>
+                  <div class='button-group'>
+                    <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
+                    <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
+                    <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
+                  </div>
+                  <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
+                </div>
+              <% } %>
+            <% }); %>
+        </div>
+        <div class='col col-sm-3'>
+          <p class='status-heading'>In Progress</p>
+          <% tasks.forEach(function(task) { %>
+            <% if (task.status === 'In Progress' ) { %>
+              <div class='card mb-4 pt-2'>
+                <h5 class="card-title"><%= task.name %></h5>
+                <p class="card-text">Due: <%= formatDate(task.due) %></p>
+                <div class='button-group'>
+                  <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
+                  <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
+                  <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
+                </div>
+                <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
+              </div>
+            <% } %>
+            <% }); %>
+        </div>
+        <div class='col col-sm-3'>
+          <p class='status-heading'>Completed</p>
+          <% tasks.forEach(function(task) { %>
+            <% if (task.status === 'Completed' ) { %>
+              <div class='card mb-4 pt-2'>
+                <h5 class="card-title"><%= task.name %></h5>
+                <p class="card-text">Due: <%= formatDate(task.due) %></p>
+                <div class='button-group'>
+                  <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
+                  <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
+                  <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
+                </div>
+                <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
+              </div>
+            <% } %>
+          <% }); %>
+        </div>
+        <div class='col col-sm-3'>
+          <p class='status-heading'>Stuck</p>
+          <% tasks.forEach(function(task) { %>
+            <% if (task.status === 'Stuck' ) { %>
+              <div class='card mb-4 pt-2'>
+                <h5 class="card-title"><%= task.name %></h5>
+                <p class="card-text">Due: <%= formatDate(task.due) %></p>
+                <div class='button-group'>
+                  <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
+                  <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
+                  <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
+                </div>
+                <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
+              </div>
+            <% } %>
+          <% }); %>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>
+
+<% function formatDate(date) {
+  var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+}
+%>

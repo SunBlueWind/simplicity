@@ -1,0 +1,14 @@
+.status-heading {
+    border: 1px solid black;
+    margin: 20% 1% 5%;
+}
+
+.content {
+    width: 25%;
+    margin-top: 50px;
+}
+
+/*.card .btn {*/
+/*    width: 40%;*/
+/*    display: inline-block;*/
+/*}*/
