@@ -27,10 +27,10 @@
                 <div class='col col-sm-3'>
                   <!-- Display status headings -->
                   <% if (s === status[0] ) { %>
-                    <p class='status-heading btn btn-secondary'><%= s %></p>
+                    <p class='status-heading btn btn-primary'><%= s %></p>
                   <% } %>
                   <% if (s === status[1] ) { %>
-                    <p class='status-heading btn btn-primary'><%= s %></p>
+                    <p class='status-heading btn btn-warning'><%= s %></p>
                   <% } %>
                   <% if (s === status[2] ) { %>
                     <p class='status-heading btn btn-success'><%= s %></p>
@@ -64,10 +64,10 @@
                           <% } %>
                           <div class='button-group hide'>
                             <% if (s !== status[0] ) { %>
-                              <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto" data-toggle="hover" data-content="Delete">To Do</a>
+                              <a href="<%= task.id %>/todo" class="btn btn-outline-primary btn-sm my-auto" data-toggle="hover" data-content="Delete">To Do</a>
                             <% } %>
                             <% if (s !== status[1] ) { %>
-                             <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
+                             <a href="<%= task.id %>/inprogress" class="btn btn-outline-warning btn-sm my-auto">In Progress</a>
                             <% } %>
                             <% if (s !== status[2] ) { %>
                               <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
