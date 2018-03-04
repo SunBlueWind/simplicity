@@ -34,3 +34,7 @@
 #new-task {
     color: white;
 }
+
+.tab-content, .tab-pane {
+    width: 100%;
+}
