@@ -53,7 +53,8 @@ app.get('/index', function(req, res) {
             console.log(err);
             res.redirect('/');
         } else {
-            res.render('home', {tasks: tasks});
+            var tab = req.query.tab ? req.query.tab : 'Personal';
+            res.render('home', {tasks: tasks, tab: tab});
         }
     });
 });
@@ -72,75 +73,29 @@ app.post('/new', function(req, res) {
             console.log(err);
             res.redirect("/");
         } else {
-            res.redirect("/index");
+            res.redirect("/index?tab=" + task.channel);
         }
     });
-});
-
-/////////////////////////////////////////////////
-// Change status routes
-/////////////////////////////////////////////////
-app.get('/:id/todo', function(req, res) {
-    Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
-            res.redirect("/");
-        } else {
-            task.status = 'To Do';
-            task.save();
-            res.redirect("/index");
-        }
-    })
-});
-
-app.get('/:id/inprogress', function(req, res) {
-    Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
-            res.redirect("/");
-        } else {
-            task.status = 'In Progress';
-            task.save();
-            res.redirect("/index");
-        }
-    })
-});
-
-app.get('/:id/completed', function(req, res) {
-    Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
-            res.redirect("/");
-        } else {
-            task.status = 'Completed';
-            task.save();
-            res.redirect("/index");
-        }
-    })
-});
-
-app.get('/:id/stuck', function(req, res) {
-    Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
-            res.redirect("/");
-        } else {
-            task.status = 'Stuck';
-            task.save();
-            res.redirect("/index");
-        }
-    })
 });
 
 /////////////////////////////////////////////////
 // Delete route
 /////////////////////////////////////////////////
 app.get('/:id/delete', function(req, res) {
+    var channel;
+    Task.findById(req.params.id, function(err, task) {
+        if (err) {
+            console.log(err)
+        } else {
+            channel = task.channel;
+        }
+    });
     Task.findByIdAndRemove(req.params.id, function(err) {
         if (err) {
             console.log(err);
+            res.redirect('/')
         }
-        res.redirect("/index");
+        res.redirect("/index?tab=" + channel);
     })
 });
 
@@ -168,6 +123,60 @@ app.put('/:id', function(req, res) {
             res.redirect('/index');
         }
     })
+});
+
+
+/////////////////////////////////////////////////
+// Change status routes
+/////////////////////////////////////////////////
+app.get('/:id/:status', function(req, res) {
+    Task.findById(req.params.id, function(err, task) {
+        if (err) {
+            console.log(err);
+            res.redirect("/");
+        } else {
+            switch(req.params.status) {
+                case 'todo':
+                    task.status = 'To Do';
+                    break;
+                case 'inprogress':
+                    task.status = 'In Progress';
+                    break;
+                case 'completed':
+                    task.status = 'Completed';
+                    break;
+                case 'stuck':
+                    task.status = 'Stuck';
+                    break;
+                default:
+                    task.status = 'To Do';
+                    break;
+            }
+            if (req.params.status === 'Completed') {
+                task.completionDate = new Date();
+            } else {
+                task.completionDate = new Date(10000000);
+            }
+            task.save();
+            res.redirect("/index?tab=" + task.channel);
+        }
+    })
+});
+
+/////////////////////////////////////////////////
+// user routes
+/////////////////////////////////////////////////
+
+app.get('/login', function(req, res) {
+    res.render('login');
+});
+
+app.get('/signup', function(req, res) {
+    res.render('signup');
+});
+
+app.get('/user', function(req, res) {
+    res.render('user');
 });
 
 app.listen(process.env.PORT, process.env.IP, function() {

@@ -38,3 +38,7 @@
 .tab-content, .tab-pane {
     width: 100%;
 }
+
+#history .card {
+    width: 50%;
+}
