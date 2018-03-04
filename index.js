@@ -5,6 +5,8 @@ var express        = require('express'),
     mongoose       = require("mongoose"),
     //User           = require("./models/user"),
     Task           = require("./models/task");
+    
+app.locals.moment = require("moment");
 
 mongoose.connect('mongodb://localhost/yelp_camp');
 app.set("view engine", "ejs");
@@ -13,6 +15,10 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 
 app.get('/', function(req, res) {
+    res.render('landing');
+})
+
+app.get('/index', function(req, res) {
     Task.find({}, function(err, tasks) {
         if (err) {
             console.log(err);
@@ -23,6 +29,9 @@ app.get('/', function(req, res) {
     });
 });
 
+/////////////////////////////////////////////////
+// New Tasks routes
+/////////////////////////////////////////////////
 app.get('/new', function(req, res) {
     res.render('new');
 });
@@ -34,11 +43,14 @@ app.post('/new', function(req, res) {
             console.log(err);
             res.redirect("/");
         } else {
-            res.redirect("/");
+            res.redirect("/index");
         }
     });
 });
 
+/////////////////////////////////////////////////
+// Change status routes
+/////////////////////////////////////////////////
 app.get('/:id/todo', function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err) {
@@ -47,7 +59,7 @@ app.get('/:id/todo', function(req, res) {
         } else {
             task.status = 'To Do';
             task.save();
-            res.redirect("/");
+            res.redirect("/index");
         }
     })
 });
@@ -60,7 +72,7 @@ app.get('/:id/inprogress', function(req, res) {
         } else {
             task.status = 'In Progress';
             task.save();
-            res.redirect("/");
+            res.redirect("/index");
         }
     })
 });
@@ -73,7 +85,7 @@ app.get('/:id/completed', function(req, res) {
         } else {
             task.status = 'Completed';
             task.save();
-            res.redirect("/");
+            res.redirect("/index");
         }
     })
 });
@@ -86,17 +98,46 @@ app.get('/:id/stuck', function(req, res) {
         } else {
             task.status = 'Stuck';
             task.save();
-            res.redirect("/");
+            res.redirect("/index");
         }
     })
 });
 
+/////////////////////////////////////////////////
+// Delete route
+/////////////////////////////////////////////////
 app.get('/:id/delete', function(req, res) {
     Task.findByIdAndRemove(req.params.id, function(err) {
         if (err) {
             console.log(err);
         }
-        res.redirect("/");
+        res.redirect("/index");
+    })
+});
+
+/////////////////////////////////////////////////
+// Edit routes
+/////////////////////////////////////////////////
+app.get('/:id/edit', function(req, res) {
+    Task.findById(req.params.id, function(err, task) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            res.render('edit', {task: task});
+        }
+    });
+});
+
+app.put('/:id', function(req, res) {
+    var newTask = req.body.task;
+    Task.findByIdAndUpdate(req.params.id, newTask, function(err, task) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            res.redirect('/index');
+        }
     })
 });
 

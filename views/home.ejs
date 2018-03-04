@@ -1,75 +1,63 @@
 <% include ../partials/heading %>
 
+<% var status = ['To Do', 'In Progress', 'Completed', 'Stuck']; %>
+
 <div class='container'>
     <div class='row text-center'>
+      
+      <% status.forEach(function(s) { %>
         <div class='col col-sm-3'>
-          <p class='status-heading'>To Do</p>
+          <% if (s === status[0] ) { %>
+            <p class='status-heading btn btn-secondary'><%= s %></p>
+          <% } %>
+          <% if (s === status[1] ) { %>
+            <p class='status-heading btn btn-primary'><%= s %></p>
+          <% } %>
+          <% if (s === status[2] ) { %>
+            <p class='status-heading btn btn-success'><%= s %></p>
+          <% } %>
+          <% if (s === status[3] ) { %>
+            <p class='status-heading btn btn-danger'><%= s %></p>
+          <% } %>
+          
             <% tasks.forEach(function(task) { %>
-              <% if (task.status === 'To Do' ) { %>
+              <% if (task.status === s ) { %>
                 <div class='card mb-4 pt-2'>
-                  <h5 class="card-title"><%= task.name %></h5>
-                  <p class="card-text">Due: <%= formatDate(task.due) %></p>
-                  <div class='button-group'>
-                    <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
-                    <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
-                    <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
+                  <span>
+                    <a href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto hide float-left">
+                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
+                    <a href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto hide float-right">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                  </span>
+                  
+                  <h5 class="card-title">
+                    <%= task.name %>
+                  </h5>
+                  <p class="text-muted">Due: <%= moment(task.due).fromNow() %></p>
+                  <% if (task.notes) { %>
+                  <p class='card-text'>Notes: <%= task.notes %></p>
+                  <% } %>
+                  <div class='button-group hide'>
+                    <% if (s !== status[0] ) { %>
+                      <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
+                    <% } %>
+                    <% if (s !== status[1] ) { %>
+                     <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
+                    <% } %>
+                    <% if (s !== status[2] ) { %>
+                      <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
+                    <% } %>
+                    <% if (s !== status[3] ) { %>
+                      <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
+                    <% } %>
                   </div>
-                  <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
                 </div>
               <% } %>
             <% }); %>
         </div>
-        <div class='col col-sm-3'>
-          <p class='status-heading'>In Progress</p>
-          <% tasks.forEach(function(task) { %>
-            <% if (task.status === 'In Progress' ) { %>
-              <div class='card mb-4 pt-2'>
-                <h5 class="card-title"><%= task.name %></h5>
-                <p class="card-text">Due: <%= formatDate(task.due) %></p>
-                <div class='button-group'>
-                  <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
-                  <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
-                  <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
-                </div>
-                <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
-              </div>
-            <% } %>
-            <% }); %>
-        </div>
-        <div class='col col-sm-3'>
-          <p class='status-heading'>Completed</p>
-          <% tasks.forEach(function(task) { %>
-            <% if (task.status === 'Completed' ) { %>
-              <div class='card mb-4 pt-2'>
-                <h5 class="card-title"><%= task.name %></h5>
-                <p class="card-text">Due: <%= formatDate(task.due) %></p>
-                <div class='button-group'>
-                  <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
-                  <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
-                  <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
-                </div>
-                <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
-              </div>
-            <% } %>
-          <% }); %>
-        </div>
-        <div class='col col-sm-3'>
-          <p class='status-heading'>Stuck</p>
-          <% tasks.forEach(function(task) { %>
-            <% if (task.status === 'Stuck' ) { %>
-              <div class='card mb-4 pt-2'>
-                <h5 class="card-title"><%= task.name %></h5>
-                <p class="card-text">Due: <%= formatDate(task.due) %></p>
-                <div class='button-group'>
-                  <a href="<%= task.id %>/todo" class="btn btn-outline-secondary btn-sm my-auto">To Do</a>
-                  <a href="<%= task.id %>/inprogress" class="btn btn-outline-primary btn-sm my-auto">In Progress</a>
-                  <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
-                </div>
-                <a href="<%= task.id %>/delete" class="btn btn-danger btn-sm my-auto">Delete</a>
-              </div>
-            <% } %>
-          <% }); %>
-        </div>
+      <% }); %>
     </div>
 </div>
 

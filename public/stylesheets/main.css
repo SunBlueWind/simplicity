@@ -1,6 +1,14 @@
+.navbar-brand img {
+    height: 40px;
+}
+
 .status-heading {
-    border: 1px solid black;
     margin: 20% 1% 5%;
+    width: 100%;
+}
+
+.status-heading.btn:hover {
+    cursor: default;
 }
 
 .content {
@@ -8,7 +16,21 @@
     margin-top: 50px;
 }
 
-/*.card .btn {*/
-/*    width: 40%;*/
-/*    display: inline-block;*/
-/*}*/
+.card .hide {
+    transition: 0.2s linear;
+    height: 0;
+    opacity: 0;
+}
+
+.card:hover .hide {
+    opacity: 1.0;
+    height: 100%;
+}
+
+.btn.hide {
+    width: 15%;
+}
+
+#new-task {
+    color: white;
+}

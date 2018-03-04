@@ -6,13 +6,14 @@
     <title>Kanban Chart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/main.css" /> 
+    <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'></link>
+    <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/main.css" /> 
     <!-- <script src="main.js"></script> -->
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Kanban</a>
+            <a class="navbar-brand" href="/"><img src='https://image.ibb.co/hwfVcn/logo.png' alt='logo'></a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -20,12 +21,12 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/index">Home <span class="sr-only">(current)</span></a>
                   </li>
                 </ul>
-                <ul class="form-inline my-2 my-lg-0">
+                <ul class="navbar-nav my-2 my-lg-0">
                   <li class="nav-item">
-                    <a class="btn btn-primary nav-link" href="/new">New Task</a>
+                    <a class="btn btn-info nav-link" id='new-task' href="/new">New Task</a>
                   </li>
                 </ul>
               </div>

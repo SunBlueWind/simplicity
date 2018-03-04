@@ -5,7 +5,8 @@ var TaskSchema = new mongoose.Schema({
     name: String,
     chanel: { type:String, default: "basic" },
     status: { type:String, default: 'To Do' },
-    due: Date
+    due: Date,
+    notes: String
 });
 
 module.exports = mongoose.model("User", TaskSchema);

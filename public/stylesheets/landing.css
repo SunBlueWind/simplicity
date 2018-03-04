@@ -1,0 +1,25 @@
+body {
+    background: url(https://image.ibb.co/fg1fSn/background.jpg) no-repeat;
+    background-size: cover;
+} 
+
+.landing-header {
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    padding-top: 55vh;
+}
+
+.landing-header h1 {
+    margin-bottom: 0.8em;
+    /*font-family: 'Montserrat', sans-serif;*/
+    /*font-size: 4.0em;*/
+}
+
+.landing-header .btn {
+    width: 10%;
+}
+
+.navbar {
+    background: rgba(0,0,0,0);;
+}
