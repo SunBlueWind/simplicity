@@ -7,6 +7,10 @@
     <div class='row text-center'>
       <div class='col col-sm-12 mt-4'>
         <ul class="nav nav-tabs">
+          <li class="nav-item">
+              <a class='nav-link disabled' href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
+            </li>
+          
           <% channels.forEach(function(ch) { %>
             <li class="nav-item">
               <a class='nav-link <% if(ch === tab){ %>active<%}%>' data-toggle="tab" href="#<%= ch %>"><%= ch %></a>
