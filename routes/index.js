@@ -16,7 +16,7 @@ router.get('/index', function(req, res) {
             res.redirect('/');
         } else {
             var tab = req.query.tab ? req.query.tab : 'Personal';
-            res.render('home', {tasks: tasks, tab: tab});
+            res.render('home', {tasks: tasks, tab: tab, page: 'home'});
         }
     });
 });

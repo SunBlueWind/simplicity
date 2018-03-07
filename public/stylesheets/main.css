@@ -1,3 +1,7 @@
+.navbar {
+    background-color: #e3f2fd;
+}
+
 .navbar-brand img {
     height: 40px;
 }
@@ -29,10 +33,6 @@
 
 .btn.hide {
     width: 15%;
-}
-
-#new-task {
-    color: white;
 }
 
 .tab-content, .tab-pane {

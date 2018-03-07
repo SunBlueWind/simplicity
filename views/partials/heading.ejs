@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Kanban Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'></link>
+    <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/main.css" /> 
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/"><img src='https://image.ibb.co/hwfVcn/logo.png' alt='logo'></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'home' ? 'active' : '' %>">
+                    <a class="nav-link" href="/index">
+                      Home <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item mx-3 <%= typeof(page) !== 'undefined' && page === 'new' ? 'active' : '' %>">
+                    <a class="nav-link" href="/new">
+                      <i class="fa fa-plus" aria-hidden="true"></i> New Task
+                    </a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav my-2 my-lg-0">
+                  <% if (!currentUser) { %>
+                    <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'login' ? 'active' : '' %>">
+                      <a class="nav-link mx-3" href="/login">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+                      </a>
+                    </li>
+                    <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'signup' ? 'active' : '' %>">
+                      <a class="nav-link" href="/signup">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up
+                      </a>
+                    </li>
+                  <% } else { %>
+                    <li class='nav-item'>
+                      <a class="nav-link mx-3">
+                        Logged In As <%= currentUser.username %>
+                      </a>
+                    </li>
+                    <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'user' ? 'active' : '' %>">
+                      <a class="nav-link" href="/user">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i> User Profile
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/logout">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                      </a>
+                    </li>
+                  <% } %>
+                </ul>
+              </div>
+        </div>
+    </nav>
+    
+    <!--Display flash messages-->
+    <div class="container mt-3">
+        <% if (success && success.length > 0) { %>
+          <div class="alert alert-success" role="alert"><%= success %></div>
+        <% } %>
+        <% if (error && error.length > 0) { %>
+          <div class="alert alert-danger" role="alert">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <%= error %>
+          </div>
+        <% } %>
+      </div>

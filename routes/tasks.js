@@ -5,7 +5,7 @@ var router = require('express').Router(),
 // New Tasks routes
 /////////////////////////////////////////////////
 router.get('/new', function(req, res) {
-    res.render('new');
+    res.render('new', {page: 'new'});
 });
 
 router.post('/new', function(req, res) {
