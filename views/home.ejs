@@ -44,7 +44,7 @@
                   <% } %>
                   
                     <% tasks.forEach(function(task) { %>
-                      <% if (task.channel === ch && task.status === s) { %>
+                      <% if (task.channel === ch && task.status === s && moment(task.completionDate).isAfter(moment().subtract(1, 'days'))) { %>
                         <div class='card mb-4 pb-1'>
                           <!-- Display delete and edit buttons -->
                           <span>

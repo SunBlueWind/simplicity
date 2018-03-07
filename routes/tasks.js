@@ -94,10 +94,10 @@ router.get('/:id/:status', function(req, res) {
                     task.status = 'To Do';
                     break;
             }
-            if (req.params.status === 'Completed') {
+            if (task.status === 'Completed') {
                 task.completionDate = new Date();
             } else {
-                task.completionDate = new Date(10000000);
+                task.completionDate = new Date(3000,1,1);
             }
             task.save();
             res.redirect("/index?tab=" + task.channel);
