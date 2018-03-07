@@ -1,10 +1,11 @@
 var router = require('express').Router(),
-    Task   = require('../models/task');
+    Task   = require('../models/task'),
+    middleware = require('../middleware');
 
 /////////////////////////////////////////////////
 // New Tasks routes
 /////////////////////////////////////////////////
-router.get('/new', function(req, res) {
+router.get('/new', middleware.isLoggedIn, function(req, res) {
     res.render('new', {page: 'new'});
 });
 
@@ -23,7 +24,7 @@ router.post('/new', function(req, res) {
 /////////////////////////////////////////////////
 // Delete route
 /////////////////////////////////////////////////
-router.get('/:id/delete', function(req, res) {
+router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
     var channel;
     Task.findById(req.params.id, function(err, task) {
         if (err) {
@@ -44,7 +45,7 @@ router.get('/:id/delete', function(req, res) {
 /////////////////////////////////////////////////
 // Edit routes
 /////////////////////////////////////////////////
-router.get('/:id/edit', function(req, res) {
+router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err) {
             console.log(err);
@@ -55,7 +56,7 @@ router.get('/:id/edit', function(req, res) {
     });
 });
 
-router.put('/:id', function(req, res) {
+router.put('/:id', middleware.isLoggedIn, function(req, res) {
     var newTask = req.body.task;
     Task.findByIdAndUpdate(req.params.id, newTask, function(err, task) {
         if (err) {
@@ -71,7 +72,7 @@ router.put('/:id', function(req, res) {
 /////////////////////////////////////////////////
 // Change status routes
 /////////////////////////////////////////////////
-router.get('/:id/:status', function(req, res) {
+router.get('/:id/:status', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err) {
             console.log(err);

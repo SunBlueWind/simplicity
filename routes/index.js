@@ -1,5 +1,6 @@
 var router = require('express').Router(),
-    Task   = require('../models/task.js');
+    Task   = require('../models/task.js'),
+    middleware = require('../middleware');
 
 /////////////////////////////////////////////////
 // home routes
@@ -9,7 +10,7 @@ router.get('/', function(req, res) {
     res.render('landing');
 })
 
-router.get('/index', function(req, res) {
+router.get('/index', middleware.isLoggedIn, function(req, res) {
     Task.find({}, function(err, tasks) {
         if (err) {
             console.log(err);

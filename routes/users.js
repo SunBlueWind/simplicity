@@ -1,6 +1,7 @@
 var router = require('express').Router(),
     passport = require('passport'),
-    User = require('../models/user');
+    User = require('../models/user'),
+    middleware = require('../middleware');
 
 /////////////////////////////////////////////////
 // user routes
