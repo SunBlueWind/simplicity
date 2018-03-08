@@ -8,7 +8,7 @@
       <div class='col col-sm-12 mt-4'>
         <ul class="nav nav-tabs">
           <li class="nav-item">
-              <a class='nav-link disabled' href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
+              <a class='nav-link disabled' href="#"><i class="fas fa-plus"></i></a>
             </li>
           
           <% channels.forEach(function(ch) { %>
@@ -17,7 +17,7 @@
             </li>
           <% }); %>
           <li class="nav-item ml-auto">
-            <a class='nav-link' data-toggle='tab' href='#history'>Completed Tasks</a>
+            <a class='nav-link' data-toggle='tab' href='#history'><i class="fas fa-history"></i> Archive</a>
           </li>
         </ul> <!-- nav-tabs -->
       </div>
@@ -50,11 +50,11 @@
                           <span>
                             <a data-toggle="tooltip" data-placement="bottom" title="Delete" 
                             href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto hide float-left">
-                              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              <i class="fas fa-trash-alt"></i>
                             </a>
                             <a data-toggle="tooltip" data-placement="bottom" title="Edit" 
                             href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto hide float-right">
-                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              <i class="fas fa-edit"></i>
                             </a>
                           </span>
                           

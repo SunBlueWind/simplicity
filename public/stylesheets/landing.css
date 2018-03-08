@@ -1,13 +1,15 @@
 body {
-    background: url(https://image.ibb.co/fg1fSn/background.jpg) no-repeat;
+    background: url(https://image.ibb.co/fg1fSn/background.jpg);
     background-size: cover;
+    background-repeat:no-repeat;
+    background-position: center center;
 } 
 
 .landing-header {
     z-index: 1;
     position: relative;
     text-align: center;
-    padding-top: 50vh;
+    padding-top: 60vh;
 }
 
 .landing-header h1 {

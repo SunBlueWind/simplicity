@@ -10,7 +10,7 @@ var router = require('express').Router(),
 router.get('/login', function(req, res) {
     if(req.isAuthenticated()) {
         req.flash('error', 'You Are Already Logged In');
-        return res.redirect('back');
+        return res.redirect('/index');
     }
     res.render('login', {page: 'login'});
 });
@@ -27,7 +27,7 @@ router.post('/login', passport.authenticate('local', {
 router.get('/signup', function(req, res) {
     if (req.isAuthenticated()) {
         req.flash('error', 'You Are Already Logged In');
-        return res.redirect('back');
+        return res.redirect('/index');
     }
     res.render('signup', {page: 'signup'});
 });
@@ -58,7 +58,7 @@ router.post('/signup', function(req, res) {
 router.get('/logout', function(req, res) {
     req.logout();
     req.flash('success', 'Successfully Logged Out');
-    res.redirect('/index');
+    res.redirect('/');
 });
 
 router.get('/user', function(req, res) {
