@@ -1,7 +1,6 @@
 var router = require('express').Router(),
     passport = require('passport'),
-    User = require('../models/user'),
-    middleware = require('../middleware');
+    User = require('../models/user');
 
 /////////////////////////////////////////////////
 // user routes
@@ -39,7 +38,8 @@ router.post('/signup', function(req, res) {
     
     var newUser = {
         username: req.body.username,
-        tasks: []
+        currentTasks: [],
+        archives: []
     };
     
     User.register(newUser, req.body.password, function(err, user) {
@@ -47,6 +47,7 @@ router.post('/signup', function(req, res) {
             return res.render("signup", {error: err.message, page: 'signup'});
         }
         passport.authenticate('local')(req, res, function() {
+            console.log("*** New User Signed Up: " + user.username);
             req.flash('success', 'Successfully Signed Up. Welcome to Simplicity ' + user.username);
             res.redirect('/index');
         });
@@ -56,6 +57,7 @@ router.post('/signup', function(req, res) {
 /////////////////////////////////////////////////
 
 router.get('/logout', function(req, res) {
+    console.log("*** User Logged Out: " + req.user.username);
     req.logout();
     req.flash('success', 'Successfully Logged Out');
     res.redirect('/');

@@ -5,11 +5,17 @@ var mongoose = require("mongoose"),
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    tasks: [
+    currentTasks: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Task"
         }    
+    ],
+    archives: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Task"
+        }  
     ]
 });
 

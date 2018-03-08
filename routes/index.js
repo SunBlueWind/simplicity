@@ -1,5 +1,5 @@
 var router = require('express').Router(),
-    Task   = require('../models/task.js'),
+    User   = require('../models/user'),
     middleware = require('../middleware');
 
 /////////////////////////////////////////////////
@@ -7,17 +7,23 @@ var router = require('express').Router(),
 /////////////////////////////////////////////////
 
 router.get('/', function(req, res) {
+    console.log("*** New Visit!");
     res.render('landing');
-})
+});
 
 router.get('/index', middleware.isLoggedIn, function(req, res) {
-    Task.find({}, function(err, tasks) {
+    var tab = req.query.tab ? req.query.tab : 'Personal';
+    User.findById(req.user.id).populate('currentTasks archives').exec(function(err, user) {
         if (err) {
-            console.log(err);
+            req.flash('error', err);
             res.redirect('/');
         } else {
-            var tab = req.query.tab ? req.query.tab : 'Personal';
-            res.render('home', {tasks: tasks, tab: tab, page: 'home'});
+            res.render('home', {
+                tasks: user.currentTasks, 
+                archives: user.archives,
+                tab: tab, 
+                page: 'home'
+            });
         }
     });
 });

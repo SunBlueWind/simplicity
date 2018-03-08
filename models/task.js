@@ -7,6 +7,7 @@ var TaskSchema = new mongoose.Schema({
     due: Date,
     notes: String,
     completionDate: { type: Date, default: new Date(3000,1,1) }
+    // isArchive: { tppe: Boolean, default: false }
 });
 
 module.exports = mongoose.model("Task", TaskSchema);

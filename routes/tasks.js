@@ -13,9 +13,13 @@ router.post('/new', function(req, res) {
     var newTask = req.body.task;
     Task.create(newTask, function(err, task) {
         if (err) {
-            console.log(err);
+            req.flash('error', err);
             res.redirect("/");
         } else {
+            req.user.currentTasks.push(task.id);
+            req.user.save();
+            console.log("*** " + req.user.username + ' Created New Task "' + task.name + '"');
+            req.flash("success", 'Successfully Created New Task "' + task.name + '"');
             res.redirect("/index?tab=" + task.channel);
         }
     });
@@ -25,20 +29,18 @@ router.post('/new', function(req, res) {
 // Delete route
 /////////////////////////////////////////////////
 router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
-    var channel;
+    
     Task.findById(req.params.id, function(err, task) {
         if (err) {
             console.log(err);
         } else {
-            channel = task.channel;
+            var channel = task.channel;
+            var name = task.name;
+            task.remove();
+            console.log("*** " + req.user.username + ' Deleted Task "' + name + '"');
+            req.flash('success', 'Successfully Deleted "' + name +'"');
+            res.redirect("/index?tab=" + channel);
         }
-    });
-    Task.findByIdAndRemove(req.params.id, function(err) {
-        if (err) {
-            console.log(err);
-            res.redirect('/');
-        }
-        res.redirect("/index?tab=" + channel);
     });
 });
 
@@ -47,8 +49,8 @@ router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
 /////////////////////////////////////////////////
 router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
+        if (err || !task) {
+            req.flash('error', err);
             res.redirect('/');
         } else {
             res.render('edit', {task: task});
@@ -59,23 +61,41 @@ router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
 router.put('/:id', middleware.isLoggedIn, function(req, res) {
     var newTask = req.body.task;
     Task.findByIdAndUpdate(req.params.id, newTask, function(err, task) {
-        if (err) {
-            console.log(err);
+        if (err || !task) {
+            req.flash('error', err);
             res.redirect('/');
         } else {
-            res.redirect('/index');
+            console.log("*** " + req.user.username + ' Updated Task "' + task.name + '"');
+            req.flash('success', 'Successfully Updated "' + task.name + '"');
+            res.redirect('/index?tab=' + task.channel);
+        }
+    });
+});
+
+router.get('/:id/archive', middleware.isLoggedIn, function(req, res) {
+    Task.findById(req.params.id, function(err, task) {
+        if (err || !task) {
+            req.flash('error', err);
+            res.redirect('/');
+        } else {
+            req.user.currentTasks.pull(task.id);
+            req.user.archives.push(task.id);
+            req.user.save();
+            console.log("*** " + req.user.username + ' Archived Task "' + task.name + '"');
+            req.flash('success', 'Successfully Archived "' + task.name + '"');
+            res.redirect('/index?tab=' + task.channel);
         }
     });
 });
 
 
 /////////////////////////////////////////////////
-// Change status routes
+// Change status routes NEED TO GO LAST
 /////////////////////////////////////////////////
 router.get('/:id/:status', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
+        if (err || !task) {
+            req.flash('error', err);
             res.redirect("/");
         } else {
             switch(req.params.status) {
@@ -92,7 +112,6 @@ router.get('/:id/:status', middleware.isLoggedIn, function(req, res) {
                     task.status = 'Stuck';
                     break;
                 default:
-                    task.status = 'To Do';
                     break;
             }
             if (task.status === 'Completed') {
@@ -101,6 +120,8 @@ router.get('/:id/:status', middleware.isLoggedIn, function(req, res) {
                 task.completionDate = new Date(3000,1,1);
             }
             task.save();
+            console.log("*** " + req.user.username + ' Updated Task "' + task.name + '" to "' + task.status + '"');
+            req.flash('success', 'Successfully Updated "' + task.name + '" to "' + task.status + '"');
             res.redirect("/index?tab=" + task.channel);
         }
     });
