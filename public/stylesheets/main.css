@@ -26,7 +26,7 @@
     opacity: 0;
 }
 
-.card:hover .hide {
+.card:hover .hide, .card:focus .hide {
     opacity: 1.0;
     height: 100%;
 }
@@ -41,4 +41,32 @@
 
 #history .card {
     width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+    .content {
+        width: 75%;
+        margin-top: 25px;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .content {
+        width: 50%;
+        margin-top: 25px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .content {
+        width: 40%;
+        margin-top: 30px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .content {
+        width: 33%;
+        margin-top: 40px;
+    }
 }

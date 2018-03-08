@@ -5,7 +5,7 @@
 
 <div class='container'>
     <div class='row text-center'>
-      <div class='col col-xs-12 mt-4'>
+      <div class='col col-12 mt-4'>
         <ul class="nav nav-tabs">
           <li class="nav-item">
               <a class='nav-link disabled' href="#"><i class="fas fa-plus"></i></a>
@@ -28,7 +28,7 @@
           <div id="<%= ch %>" class="tab-pane fade <% if(ch === tab){ %>show active<%}%>">
             <div class='row'>
               <% status.forEach(function(s) { %>
-                <div class='col col-xs-3'>
+                <div class='col col-12 col-sm-3'>
                   <!-- Display status headings -->
                   <% if (s === status[0] ) { %>
                     <p class='status-heading btn btn-primary'><%= s %></p>
@@ -47,20 +47,20 @@
                       <% if (task.channel === ch && task.status === s) { %>
                         <div class='card mb-4 pb-1'>
                           <!-- Display delete and edit buttons -->
-                          <span>
+                          <span class='hide'>
                             <a data-toggle="tooltip" data-placement="bottom" title="Delete" 
-                            href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto hide float-left">
+                            href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto float-left">
                               <i class="fas fa-trash-alt"></i>
                             </a>
                             <!--Only display Archive button if Completed-->
                             <% if (task.status === 'Completed') { %>
                               <a data-toggle="tooltip" data-placement="bottom" title="Archive" 
-                              href="<%= task.id %>/archive" class="btn btn-light btn-sm mx-auto hide">
+                              href="<%= task.id %>/archive" class="btn btn-light btn-sm mx-auto">
                                 <i class="fas fa-archive"></i>
                               </a>
                             <% } %>
                             <a data-toggle="tooltip" data-placement="bottom" title="Edit" 
-                            href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto hide float-right">
+                            href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto float-right">
                               <i class="fas fa-edit"></i>
                             </a>
                           </span>
