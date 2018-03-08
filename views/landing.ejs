@@ -13,8 +13,12 @@
             <div class="col">
                 <div class="landing-header">
                     <h1>Simplicity - The Key to Organization</h1>
-                    <a class="btn btn-outline-primary mx-3" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
-                    <a class="btn btn-outline-primary mx-3" href="/signup"><i class="fas fa-user-plus"></i> Sign Up</i></a>
+                    <% if (!currentUser) { %>
+                        <a class="btn btn-outline-primary mx-3" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a class="btn btn-outline-primary mx-3" href="/signup"><i class="fas fa-user-plus"></i> Sign Up</i></a>
+                    <% } else { %>
+                        <a class='btn btn-outline-primary' href='/index'><i class="fas fa-clipboard-list"></i> Dashboard</a>
+                    <% } %>
                 </div>
             </div>
         </div>
