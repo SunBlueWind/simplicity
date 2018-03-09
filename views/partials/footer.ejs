@@ -3,7 +3,9 @@
     <script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script>
     <script type='text/javascript'>
       $(document).ready(function(){
-        $('#myTable').DataTable();
+        $('#archiveTable').DataTable({
+            "order": [[ 1, "desc" ]]
+        });
       });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

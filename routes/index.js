@@ -8,21 +8,25 @@ var router = require('express').Router(),
 
 router.get('/', function(req, res) {
     console.log("*** New Visit!");
-    res.render('landing');
+    res.render('UI/landing');
 });
 
-router.get('/index', middleware.isLoggedIn, function(req, res) {
+router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
+    res.render('UI/dashboard', {page: 'dashboard'});
+})
+
+router.get('/charts', middleware.isLoggedIn, function(req, res) {
     var tab = req.query.tab ? req.query.tab : 'Personal';
     User.findById(req.user.id).populate('currentTasks archives').exec(function(err, user) {
         if (err) {
             req.flash('error', err);
             res.redirect('/');
         } else {
-            res.render('home', {
+            res.render('UI/charts', {
                 tasks: user.currentTasks, 
                 archives: user.archives,
                 tab: tab, 
-                page: 'home'
+                page: 'charts'
             });
         }
     });

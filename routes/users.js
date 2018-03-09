@@ -9,13 +9,13 @@ var router = require('express').Router(),
 router.get('/login', function(req, res) {
     if(req.isAuthenticated()) {
         req.flash('error', 'You Are Already Logged In');
-        return res.redirect('/index');
+        return res.redirect('/dashboard');
     }
-    res.render('login', {page: 'login'});
+    res.render('users/login', {page: 'login'});
 });
 
 router.post('/login', passport.authenticate('local', {
-    successRedirect: "/index",
+    successRedirect: "/dashboard",
     failureRedirect: "/login",
     successFlash: "Welcome Back",
     failureFlash: true
@@ -26,9 +26,9 @@ router.post('/login', passport.authenticate('local', {
 router.get('/signup', function(req, res) {
     if (req.isAuthenticated()) {
         req.flash('error', 'You Are Already Logged In');
-        return res.redirect('/index');
+        return res.redirect('/dashboard');
     }
-    res.render('signup', {page: 'signup'});
+    res.render('users/signup', {page: 'signup'});
 });
 
 router.post('/signup', function(req, res) {
@@ -49,7 +49,7 @@ router.post('/signup', function(req, res) {
         passport.authenticate('local')(req, res, function() {
             console.log("*** New User Signed Up: " + user.username);
             req.flash('success', 'Successfully Signed Up. Welcome to Simplicity ' + user.username);
-            res.redirect('/index');
+            res.redirect('/dashboard');
         });
     });
 })

@@ -6,7 +6,7 @@ var router = require('express').Router(),
 // New Tasks routes
 /////////////////////////////////////////////////
 router.get('/new', middleware.isLoggedIn, function(req, res) {
-    res.render('new', {page: 'new'});
+    res.render('tasks/new', {page: 'new'});
 });
 
 router.post('/new', function(req, res) {
@@ -20,7 +20,7 @@ router.post('/new', function(req, res) {
             req.user.save();
             console.log("*** " + req.user.username + ' Created New Task "' + task.name + '"');
             req.flash("success", 'Successfully Created New Task "' + task.name + '"');
-            res.redirect("/index?tab=" + task.channel);
+            res.redirect("/charts?tab=" + task.channel);
         }
     });
 });
@@ -39,7 +39,7 @@ router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
             task.remove();
             console.log("*** " + req.user.username + ' Deleted Task "' + name + '"');
             req.flash('success', 'Successfully Deleted "' + name +'"');
-            res.redirect("/index?tab=" + channel);
+            res.redirect("/charts?tab=" + channel);
         }
     });
 });
@@ -53,7 +53,7 @@ router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
             req.flash('error', err);
             res.redirect('/');
         } else {
-            res.render('edit', {task: task});
+            res.render('tasks/edit', {task: task});
         }
     });
 });
@@ -67,7 +67,7 @@ router.put('/:id', middleware.isLoggedIn, function(req, res) {
         } else {
             console.log("*** " + req.user.username + ' Updated Task "' + task.name + '"');
             req.flash('success', 'Successfully Updated "' + task.name + '"');
-            res.redirect('/index?tab=' + task.channel);
+            res.redirect('/charts?tab=' + task.channel);
         }
     });
 });
@@ -83,7 +83,7 @@ router.get('/:id/archive', middleware.isLoggedIn, function(req, res) {
             req.user.save();
             console.log("*** " + req.user.username + ' Archived Task "' + task.name + '"');
             req.flash('success', 'Successfully Archived "' + task.name + '"');
-            res.redirect('/index?tab=' + task.channel);
+            res.redirect('/charts?tab=' + task.channel);
         }
     });
 });
@@ -122,7 +122,7 @@ router.get('/:id/:status', middleware.isLoggedIn, function(req, res) {
             task.save();
             console.log("*** " + req.user.username + ' Updated Task "' + task.name + '" to "' + task.status + '"');
             req.flash('success', 'Successfully Updated "' + task.name + '" to "' + task.status + '"');
-            res.redirect("/index?tab=" + task.channel);
+            res.redirect("/charts?tab=" + task.channel);
         }
     });
 });

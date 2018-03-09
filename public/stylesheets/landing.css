@@ -25,3 +25,34 @@ body {
 .navbar {
     background: rgba(0,0,0,0);;
 }
+
+@media only screen and (max-width: 600px) {
+    .landing-header .btn {
+        width: 50%;
+        margin: 0.4em 0;
+    }
+    .landing-header {
+        padding-top: 50vh;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .landing-header .btn {
+        width: 30%;
+    }
+    .landing-header {
+        padding-top: 55vh;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    .landing-header .btn {
+        width: 25%;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .landing-header .btn {
+        width: 20%;
+    }
+}
