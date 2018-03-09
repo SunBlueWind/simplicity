@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kanban Chart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css'></link>
     <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/main.css" /> 
 </head>
 <body>
@@ -20,14 +21,18 @@
             
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                  <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'home' ? 'active' : '' %>">
-                    <a class="nav-link" href="/index">Dashboard</a>
-                  </li>
-                  <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'new' ? 'active' : '' %>">
-                    <a class="nav-link" href="/new">
-                      <i class="fas fa-plus"></i> New Task
-                    </a>
-                  </li>
+                  <% if (currentUser) { %>
+                    <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'home' ? 'active' : '' %>">
+                      <a class="nav-link" href="/index">
+                        <i class="fas fa-user-circle"></i> Dashboard
+                      </a>
+                    </li>
+                    <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'new' ? 'active' : '' %>">
+                      <a class="nav-link" href="/new">
+                        <i class="fas fa-plus"></i> New Task
+                      </a>
+                    </li>
+                  <% } %>
                 </ul>
                 <ul class="navbar-nav my-2 my-lg-0">
                   <% if (!currentUser) { %>
@@ -45,11 +50,6 @@
                     <li class='nav-item'>
                       <a class="nav-link">
                         Logged In As <%= currentUser.username %>
-                      </a>
-                    </li>
-                    <li class="nav-item <%= typeof(page) !== 'undefined' && page === 'user' ? 'active' : '' %>">
-                      <a class="nav-link" href="/user">
-                        <i class="fas fa-user-circle"></i> User Profile
                       </a>
                     </li>
                     <li class="nav-item">
