@@ -1,6 +1,7 @@
 var router = require('express').Router(),
     Task   = require('../models/task'),
-    middleware = require('../middleware');
+    middleware = require('../middleware'),
+    moment = require('moment');
 
 /////////////////////////////////////////////////
 // New Tasks routes
@@ -12,7 +13,7 @@ router.get('/new', middleware.isLoggedIn, function(req, res) {
 router.post('/new', function(req, res) {
     var newTask = req.body.task;
     Task.create(newTask, function(err, task) {
-        if (err) {
+        if (err || !task) {
             req.flash('error', err);
             res.redirect("/");
         } else {
@@ -29,10 +30,10 @@ router.post('/new', function(req, res) {
 // Delete route
 /////////////////////////////////////////////////
 router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
-    
     Task.findById(req.params.id, function(err, task) {
-        if (err) {
-            console.log(err);
+        if (err || !task) {
+            req.flash('error', err);
+            res.redirect('/charts');
         } else {
             var channel = task.channel;
             var name = task.name;

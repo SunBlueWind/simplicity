@@ -28,7 +28,7 @@
                     <tbody>
                         <% tasks.forEach(function(task) { %>
                             <tr>
-                                <th scope='row'><%= moment(task.due).format('YYYY MMMM DD') %></th>
+                                <th scope='row'><%= moment(task.due).format('YYYY MMM DD, kk:mm') %></th>
                                 <td><%= task.name %></td>
                                 <td><%= task.status %></td>
                                 <td><%= task.channel %></td>
