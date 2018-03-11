@@ -66,10 +66,17 @@
                           </span>
                           
                           <!-- card content -->
-                          <h5 class="card-title">
+                          <h5 class="card-title mt-2">
                             <%= task.name %>
                           </h5>
-                          <p class="text-muted">Due: <%= moment(task.due).fromNow() %></p>
+                          <!-- display warning / danger colors -->
+                          <% if (moment(task.due).isBefore(moment())) { %>
+                            <p class="text-danger font-weight-bold">Due: <%= moment(task.due).fromNow() %></p>
+                          <% } else if (moment(task.due).isBefore(moment().add(24, 'hours'))) { %>
+                            <p class="text-warning font-weight-bold">Due: <%= moment(task.due).fromNow() %></p>
+                          <% } else { %>
+                            <p class="text-muted">Due: <%= moment(task.due).fromNow() %></p>
+                          <% } %>
                           <% if (task.notes) { %>
                           <p class='card-text'>Notes: <%= task.notes %></p>
                           <% } %>
@@ -98,36 +105,38 @@
         
         <!--Display History-->
         <div id='history' class='tab-pane fade mt-5'>
-          <table class='table table-striped' id='archiveTable'>
-            <thead class='thead-dark'>
-              <tr>
-                <th scope='col'>Name</th>
-                <th scope='col'>Completion Date</th>
-                <th scope='col'>Due Date</th>
-                <th scope='col'>Notes</th>
-                <th scope='col'>Channel</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% archives.forEach(function(task) { %>
+          <% if (archives.length <= 0) { %>
+            <p class='lead mx-auto'>Looks like you have no archives currently...</p>
+          <% } else { %>
+            <table class='table table-striped' id='archiveTable'>
+              <thead class='thead-dark'>
                 <tr>
-                  <th scope='row'><%= task.name %></th>
-                  <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
-                  <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
-                  <% if (task.notes) { %>
-                    <td>Notes: <%= task.notes %></td>
-                  <% } else {%>
-                    <td>N\A</td>
-                  <% } %>
-                  <td><%= task.channel %></td>
+                  <th scope='col'>Name</th>
+                  <th scope='col'>Completion Date</th>
+                  <th scope='col'>Due Date</th>
+                  <th scope='col'>Notes</th>
+                  <th scope='col'>Channel</th>
                 </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-      
+              </thead>
+              <tbody>
+                <% archives.forEach(function(task) { %>
+                  <tr>
+                    <th scope='row'><%= task.name %></th>
+                    <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
+                    <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
+                    <td><%= task.channel %></td>
+                    <% if (task.notes) { %>
+                      <td><%= task.notes %></td>
+                    <% } else {%>
+                      <td>N\A</td>
+                    <% } %>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          <% } %>
+        </div> <!-- history -->
       </div> <!-- tab-content -->
-      
     </div> <!-- row -->
 </div> <!-- container -->
 

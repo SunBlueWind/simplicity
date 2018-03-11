@@ -12,7 +12,18 @@ router.get('/', function(req, res) {
 });
 
 router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
-    res.render('UI/dashboard', {page: 'dashboard'});
+    User.findById(req.user.id).populate('currentTasks').exec(function(err, user) {
+        if (err) {
+            req.flash('error', err);
+            res.redirect('/');
+        } else {
+            res.render('UI/dashboard', {
+            page: 'dashboard',
+            username: user.username,
+            tasks: user.currentTasks
+        });
+        }
+    });
 })
 
 router.get('/charts', middleware.isLoggedIn, function(req, res) {

@@ -1,5 +1,49 @@
 <% include ../partials/heading %>
 
-<h1>Dashboard</h1>
+<div class='container'>
+    <div class='row'>
+        <div class='col col-12'>
+            <h1><%= username %>'s Dashboard</h1>
+            <a class="btn btn-outline-primary" href="/new">
+                <i class="fas fa-plus"></i> New Task
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div class='row'>
+        <% if (tasks.length <= 0) { %>
+            <p class='lead mx-auto'>Looks like you have no active tasks currently...</p>
+        <% } else { %>
+            <div class='col'>
+                <table class='table table-striped text-center' id='dashboardTable'>
+                    <thead class='thead-dark'>
+                        <tr>
+                            <th scope='col'>Due</th>
+                            <th scope='col'>Name</th>
+                            <th scope='col'>Status</th>
+                            <th scope='col'>Channel</th>
+                            <th scope='col'>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tasks.forEach(function(task) { %>
+                            <tr>
+                                <th scope='row'><%= moment(task.due).format('YYYY MMMM DD') %></th>
+                                <td><%= task.name %></td>
+                                <td><%= task.status %></td>
+                                <td><%= task.channel %></td>
+                                <% if (task.notes) { %>
+                                    <td><%= task.notes %></td>
+                                <% } else { %>
+                                    <td>N\A</td>
+                                <% } %>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+</div>
 
 <% include ../partials/footer %>
