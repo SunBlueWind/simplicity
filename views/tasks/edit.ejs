@@ -13,10 +13,12 @@
                     </div>
                     <div class='form-group'>
                         <label for="channel" form='new-form'>Channel</label>
-                        <select class="custom-select" id="channel" name='task[channel]'>
-                            <option value="Personal" <% if (task.channel === 'Personal') { %> selected <% } %>>Personal</option>
-                            <option value="Work" <% if (task.channel === 'Work') { %> selected <% } %>>Work</option>
-                        </select>
+                        <input class='form-control' id='channel' name='task[channel]' list='channels' placeholder='Choose or Create Your Own' value='<%= task.channel %>'></input>
+                        <datalist id='channels'>
+                            <% channels.forEach(function(channel) { %>
+                                <option value='<%= channel %>'></option>
+                            <% }); %>
+                        </datalist>
                     </div>
                     <div class="form-group">
                         <label for="due">Due Date</label>

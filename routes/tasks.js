@@ -1,5 +1,6 @@
 var router = require('express').Router(),
     Task   = require('../models/task'),
+    User   = require('../models/user'),
     middleware = require('../middleware'),
     moment = require('moment');
 
@@ -7,7 +8,18 @@ var router = require('express').Router(),
 // New Tasks routes
 /////////////////////////////////////////////////
 router.get('/new', middleware.isLoggedIn, function(req, res) {
-    res.render('tasks/new', {page: 'new'});
+    User.findById(req.user.id, function(err, user) {
+        if (err || !user) {
+            req.flash('error', err.message);
+            res.redirect('/dashboard');
+        } else {
+            res.render('tasks/new', {
+                page: 'new',
+                channels: user.channels
+            });
+        }
+    })
+    
 });
 
 router.post('/new', function(req, res) {
@@ -17,10 +29,13 @@ router.post('/new', function(req, res) {
             req.flash('error', err.message);
             res.redirect("/dashboard");
         } else {
+            if (!req.user.channels.includes(task.channel)) {
+                req.user.channels.push(task.channel);
+            }
             req.user.currentTasks.push(task.id);
             req.user.save();
-            console.log("*** " + req.user.username + ' Created New Task "' + task.name + '"');
-            req.flash("success", 'Successfully Created New Task "' + task.name + '"');
+            console.log("*** " + req.user.username + ' Created New Task "' + task.name + '" in Channel "' + task.channel + '"');
+            req.flash("success", 'Successfully Created New Task "' + task.name + '" in Channel "' + task.channel + '"');
             res.redirect("/charts?tab=" + task.channel);
         }
     });
@@ -54,7 +69,10 @@ router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
             req.flash('error', err.message);
             res.redirect('/dashboard');
         } else {
-            res.render('tasks/edit', {task: task});
+            res.render('tasks/edit', {
+                task: task,
+                channels: req.user.channels
+            });
         }
     });
 });
@@ -66,6 +84,11 @@ router.put('/:id', middleware.isLoggedIn, function(req, res) {
             req.flash('error', err.message);
             res.redirect('/dashboard');
         } else {
+            if (!req.user.channels.includes(req.body.task.channel)) {
+                req.user.channels.push(req.body.task.channel);
+                req.user.save();
+            }
+            
             console.log("*** " + req.user.username + ' Updated Task "' + task.name + '"');
             // console.log(task.due);
             // console.log(new Date());

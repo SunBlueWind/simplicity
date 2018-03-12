@@ -16,7 +16,11 @@ var UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Task"
         }  
-    ]
+    ],
+    channels: {
+        type: [String],
+        default: ['Default']
+    }
 });
 
 UserSchema.plugin(passportLocalMongoose);

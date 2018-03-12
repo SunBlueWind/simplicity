@@ -27,17 +27,18 @@ router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
 })
 
 router.get('/charts', middleware.isLoggedIn, function(req, res) {
-    var tab = req.query.tab ? req.query.tab : 'Personal';
     User.findById(req.user.id).populate('currentTasks archives').exec(function(err, user) {
         if (err || !user) {
             req.flash('error', err.message);
             res.redirect('/dashboard');
         } else {
+            var tab = req.query.tab ? req.query.tab : 'Default';
             res.render('UI/charts', {
                 tasks: user.currentTasks, 
                 archives: user.archives,
                 tab: tab, 
-                page: 'charts'
+                page: 'charts',
+                channels: user.channels
             });
         }
     });
