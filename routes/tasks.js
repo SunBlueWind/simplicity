@@ -14,8 +14,8 @@ router.post('/new', function(req, res) {
     var newTask = req.body.task;
     Task.create(newTask, function(err, task) {
         if (err || !task) {
-            req.flash('error', err);
-            res.redirect("/");
+            req.flash('error', err.message);
+            res.redirect("/dashboard");
         } else {
             req.user.currentTasks.push(task.id);
             req.user.save();
@@ -32,7 +32,7 @@ router.post('/new', function(req, res) {
 router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
-            req.flash('error', err);
+            req.flash('error', err.message);
             res.redirect('/charts');
         } else {
             var channel = task.channel;
@@ -51,8 +51,8 @@ router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
 router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
-            req.flash('error', err);
-            res.redirect('/');
+            req.flash('error', err.message);
+            res.redirect('/dashboard');
         } else {
             res.render('tasks/edit', {task: task});
         }
@@ -63,10 +63,14 @@ router.put('/:id', middleware.isLoggedIn, function(req, res) {
     var newTask = req.body.task;
     Task.findByIdAndUpdate(req.params.id, newTask, function(err, task) {
         if (err || !task) {
-            req.flash('error', err);
-            res.redirect('/');
+            req.flash('error', err.message);
+            res.redirect('/dashboard');
         } else {
             console.log("*** " + req.user.username + ' Updated Task "' + task.name + '"');
+            // console.log(task.due);
+            // console.log(new Date());
+            // console.log(moment(task.due));
+            // console.log(moment());
             req.flash('success', 'Successfully Updated "' + task.name + '"');
             res.redirect('/charts?tab=' + task.channel);
         }
@@ -76,8 +80,8 @@ router.put('/:id', middleware.isLoggedIn, function(req, res) {
 router.get('/:id/archive', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
-            req.flash('error', err);
-            res.redirect('/');
+            req.flash('error', err.message);
+            res.redirect('/dashboard');
         } else {
             req.user.currentTasks.pull(task.id);
             req.user.archives.push(task.id);
@@ -96,8 +100,8 @@ router.get('/:id/archive', middleware.isLoggedIn, function(req, res) {
 router.get('/:id/:status', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
-            req.flash('error', err);
-            res.redirect("/");
+            req.flash('error', err.message);
+            res.redirect("/dashboard");
         } else {
             switch(req.params.status) {
                 case 'todo':

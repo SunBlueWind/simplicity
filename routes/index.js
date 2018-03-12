@@ -13,8 +13,8 @@ router.get('/', function(req, res) {
 
 router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
     User.findById(req.user.id).populate('currentTasks').exec(function(err, user) {
-        if (err) {
-            req.flash('error', err);
+        if (err || !user) {
+            req.flash('error', err.message);
             res.redirect('/');
         } else {
             res.render('UI/dashboard', {
@@ -29,9 +29,9 @@ router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
 router.get('/charts', middleware.isLoggedIn, function(req, res) {
     var tab = req.query.tab ? req.query.tab : 'Personal';
     User.findById(req.user.id).populate('currentTasks archives').exec(function(err, user) {
-        if (err) {
-            req.flash('error', err);
-            res.redirect('/');
+        if (err || !user) {
+            req.flash('error', err.message);
+            res.redirect('/dashboard');
         } else {
             res.render('UI/charts', {
                 tasks: user.currentTasks, 

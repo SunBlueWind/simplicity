@@ -57,9 +57,11 @@ router.post('/signup', function(req, res) {
 /////////////////////////////////////////////////
 
 router.get('/logout', function(req, res) {
-    console.log("*** User Logged Out: " + req.user.username);
-    req.logout();
-    req.flash('success', 'Successfully Logged Out');
+    if (req.user) {
+        console.log("*** User Logged Out: " + req.user.username);
+        req.logout();
+        req.flash('success', 'Successfully Logged Out');
+    }
     res.redirect('/');
 });
 

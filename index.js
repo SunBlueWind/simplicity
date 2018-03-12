@@ -7,8 +7,8 @@ var express        = require('express'),
     LocalStrategy  = require("passport-local"),
     flash          = require("connect-flash"),
     User           = require("./models/user");
-    
-app.locals.moment = require("moment");
+
+app.locals.moment = require('moment');
 
 // app config
 mongoose.connect('mongodb://localhost/starterHacks');
