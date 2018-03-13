@@ -17,6 +17,7 @@ router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
             req.flash('error', err.message);
             res.redirect('/');
         } else {
+            console.log(user);
             res.render('UI/dashboard', {
             page: 'dashboard',
             username: user.username,
@@ -24,7 +25,7 @@ router.get('/dashboard', middleware.isLoggedIn, function(req, res) {
         });
         }
     });
-})
+});
 
 router.get('/charts', middleware.isLoggedIn, function(req, res) {
     User.findById(req.user.id).populate('currentTasks archives').exec(function(err, user) {
@@ -32,13 +33,13 @@ router.get('/charts', middleware.isLoggedIn, function(req, res) {
             req.flash('error', err.message);
             res.redirect('/dashboard');
         } else {
-            var tab = req.query.tab ? req.query.tab : 'Default';
+            var tab = req.query.tab ? req.query.tab : user.channels.length ? user.channels[0].name : null;
             res.render('UI/charts', {
                 tasks: user.currentTasks, 
                 archives: user.archives,
                 tab: tab, 
                 page: 'charts',
-                channels: user.channels
+                channels: user.channels.map(ch => ch.name)
             });
         }
     });

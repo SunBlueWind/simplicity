@@ -1,8 +1,7 @@
 var router = require('express').Router(),
     Task   = require('../models/task'),
     User   = require('../models/user'),
-    middleware = require('../middleware'),
-    moment = require('moment');
+    middleware = require('../middleware');
 
 /////////////////////////////////////////////////
 // New Tasks routes
@@ -18,11 +17,10 @@ router.get('/new', middleware.isLoggedIn, function(req, res) {
                 channels: user.channels
             });
         }
-    })
-    
+    });
 });
 
-router.post('/new', function(req, res) {
+router.post('/new', middleware.isLoggedIn, function(req, res) {
     var newTask = req.body.task;
     Task.create(newTask, function(err, task) {
         if (err || !task) {

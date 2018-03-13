@@ -7,7 +7,7 @@
       <div class='col col-12 mt-4'>
         <ul class="nav nav-tabs">
           <li class="nav-item">
-              <a class='nav-link disabled' href="#"><i class="fas fa-plus"></i></a>
+              <a class='nav-link' href="/new"><i class="fas fa-plus"></i> New Task</a>
             </li>
           
           <% channels.forEach(function(ch) { %>
@@ -21,27 +21,30 @@
         </ul> <!-- nav-tabs -->
       </div>
       
-      <div class='tab-content'>
-        <!-- Display channels -->
-        <% channels.forEach(function(ch) { %>
-          <div id="<%= ch %>" class="tab-pane fade <% if(ch === tab){ %>show active<%}%>">
-            <div class='row'>
-              <% status.forEach(function(s) { %>
-                <div class='col col-12 col-sm-3'>
-                  <!-- Display status headings -->
-                  <% if (s === status[0] ) { %>
-                    <p class='status-heading btn btn-primary'><%= s %></p>
-                  <% } %>
-                  <% if (s === status[1] ) { %>
-                    <p class='status-heading btn btn-warning'><%= s %></p>
-                  <% } %>
-                  <% if (s === status[2] ) { %>
-                    <p class='status-heading btn btn-success'><%= s %></p>
-                  <% } %>
-                  <% if (s === status[3] ) { %>
-                    <p class='status-heading btn btn-danger'><%= s %></p>
-                  <% } %>
-                  
+      <% if (tasks.length <= 0) { %>
+        <p class='lead mx-auto mt-3'>Looks like you have no active tasks currently...</p>
+      <% } else { %>
+        <div class='tab-content'>
+          <!-- Display channels -->
+          <% channels.forEach(function(ch) { %>
+            <div id="<%= ch %>" class="tab-pane fade <% if(ch === tab){ %>show active<%}%>">
+              <div class='row'>
+                <% status.forEach(function(s) { %>
+                  <div class='col col-12 col-sm-3'>
+                    <!-- Display status headings -->
+                    <% if (s === status[0] ) { %>
+                      <p class='status-heading btn btn-primary'><%= s %></p>
+                    <% } %>
+                    <% if (s === status[1] ) { %>
+                      <p class='status-heading btn btn-warning'><%= s %></p>
+                    <% } %>
+                    <% if (s === status[2] ) { %>
+                      <p class='status-heading btn btn-success'><%= s %></p>
+                    <% } %>
+                    <% if (s === status[3] ) { %>
+                      <p class='status-heading btn btn-danger'><%= s %></p>
+                    <% } %>
+                    
                     <% tasks.forEach(function(task) { %>
                       <% if (task.channel === ch && task.status === s) { %>
                         <div class='card mb-4 pb-1'>
@@ -95,47 +98,48 @@
                           </div>
                         </div> <!-- card -->
                       <% } %>
-                    <% }); %>
-                </div> <!-- col -->
-              <% }); %> <!-- forEach(s) -->
-            </div> <!-- row -->
-          </div> <!-- tab-pane -->
-        <% }); %> <!-- forEach(ch) -->
-        
-        <!--Display History-->
-        <div id='history' class='tab-pane fade mt-5'>
-          <% if (archives.length <= 0) { %>
-            <p class='lead mx-auto'>Looks like you have no archives currently...</p>
-          <% } else { %>
-            <table class='table table-striped' id='archiveTable'>
-              <thead class='thead-dark'>
-                <tr>
-                  <th scope='col'>Name</th>
-                  <th scope='col'>Completion Date</th>
-                  <th scope='col'>Due Date</th>
-                  <th scope='col'>Notes</th>
-                  <th scope='col'>Channel</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% archives.forEach(function(task) { %>
+                    <% }); %> <!-- forEach(task) -->
+                  </div> <!-- col -->
+                <% }); %> <!-- forEach(s) -->
+              </div> <!-- row -->
+            </div> <!-- tab-pane -->
+          <% }); %> <!-- forEach(ch) -->
+          
+          <!--Display History-->
+          <div id='history' class='tab-pane fade mt-5'>
+            <% if (archives.length <= 0) { %>
+              <p class='lead mx-auto'>Looks like you have no archives currently...</p>
+            <% } else { %>
+              <table class='table table-striped' id='archiveTable'>
+                <thead class='thead-dark'>
                   <tr>
-                    <th scope='row'><%= task.name %></th>
-                    <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
-                    <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
-                    <td><%= task.channel %></td>
-                    <% if (task.notes) { %>
-                      <td><%= task.notes %></td>
-                    <% } else {%>
-                      <td>N\A</td>
-                    <% } %>
+                    <th scope='col'>Name</th>
+                    <th scope='col'>Completion Date</th>
+                    <th scope='col'>Due Date</th>
+                    <th scope='col'>Notes</th>
+                    <th scope='col'>Channel</th>
                   </tr>
-                <% }); %>
-              </tbody>
-            </table>
-          <% } %>
-        </div> <!-- history -->
-      </div> <!-- tab-content -->
+                </thead>
+                <tbody>
+                  <% archives.forEach(function(task) { %>
+                    <tr>
+                      <th scope='row'><%= task.name %></th>
+                      <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
+                      <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
+                      <td><%= task.channel %></td>
+                      <% if (task.notes) { %>
+                        <td><%= task.notes %></td>
+                      <% } else {%>
+                        <td>N\A</td>
+                      <% } %>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            <% } %>
+          </div> <!-- history -->
+        </div> <!-- tab-content -->
+      <% } %> <!-- else -->
     </div> <!-- row -->
 </div> <!-- container -->
 

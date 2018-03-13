@@ -17,10 +17,12 @@ var UserSchema = new mongoose.Schema({
             ref: "Task"
         }  
     ],
-    channels: {
-        type: [String],
-        default: ['Default']
-    }
+    channels: [
+        {
+            name: String,
+            count: Number
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);

@@ -39,7 +39,8 @@ router.post('/signup', function(req, res) {
     var newUser = {
         username: req.body.username,
         currentTasks: [],
-        archives: []
+        archives: [],
+        channels: []
     };
     
     User.register(newUser, req.body.password, function(err, user) {

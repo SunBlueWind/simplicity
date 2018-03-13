@@ -21,7 +21,7 @@
                         <input class='form-control' id='channel' name='task[channel]' list='channels' placeholder='Choose or Create Your Own'></input>
                         <datalist id='channels'>
                             <% channels.forEach(function(channel) { %>
-                                <option value='<%= channel %>'></option>
+                                <option value='<%= channel.name %>'></option>
                             <% }); %>
                         </datalist>
                     </div>
