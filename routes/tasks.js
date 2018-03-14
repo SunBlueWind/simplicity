@@ -27,8 +27,15 @@ router.post('/new', middleware.isLoggedIn, function(req, res) {
             req.flash('error', err.message);
             res.redirect("/dashboard");
         } else {
-            if (!req.user.channels.includes(task.channel)) {
-                req.user.channels.push(task.channel);
+            var currChannels = req.user.channels.map(ch => ch.name);
+            if (!currChannels.includes(task.channel)) {
+                var newChannel = {
+                    name: task.channel,
+                    count: 1
+                };
+                req.user.channels.push(newChannel);
+            } else {
+                req.user.channels.find(ch => ch.name === task.channel).count += 1;
             }
             req.user.currentTasks.push(task.id);
             req.user.save();
@@ -46,15 +53,28 @@ router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
             req.flash('error', err.message);
-            res.redirect('/charts');
-        } else {
-            var channel = task.channel;
-            var name = task.name;
-            task.remove();
-            console.log("*** " + req.user.username + ' Deleted Task "' + name + '"');
-            req.flash('success', 'Successfully Deleted "' + name +'"');
-            res.redirect("/charts?tab=" + channel);
+            return res.redirect('/charts');
         }
+        
+        var channel = task.channel;
+        var name = task.name;
+        
+        var channelIndex = req.user.channels.findIndex(ch => ch.name === channel);
+        if (channelIndex < 0) {
+            req.flash('error', 'Cannot find channel ' + channel);
+            return res.redirect('/dashboard');
+        }
+        
+        if (req.user.channels[channelIndex].count === 1) {
+            req.user.channels.splice(channelIndex, 1);
+        } else {
+            req.user.channels[channelIndex].count -= 1;
+        }
+        req.user.save();
+        task.remove();
+        console.log("*** " + req.user.username + ' Deleted Task "' + name + '"');
+        req.flash('success', 'Successfully Deleted "' + name +'"');
+        res.redirect("/charts?tab=" + channel);
     });
 });
 
@@ -77,24 +97,52 @@ router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
 
 router.put('/:id', middleware.isLoggedIn, function(req, res) {
     var newTask = req.body.task;
-    Task.findByIdAndUpdate(req.params.id, newTask, function(err, task) {
+    Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
             req.flash('error', err.message);
-            res.redirect('/dashboard');
-        } else {
-            if (!req.user.channels.includes(req.body.task.channel)) {
-                req.user.channels.push(req.body.task.channel);
-                req.user.save();
-            }
-            
-            console.log("*** " + req.user.username + ' Updated Task "' + task.name + '"');
-            // console.log(task.due);
-            // console.log(new Date());
-            // console.log(moment(task.due));
-            // console.log(moment());
-            req.flash('success', 'Successfully Updated "' + task.name + '"');
-            res.redirect('/charts?tab=' + task.channel);
+            return res.redirect('/dashboard');
         }
+        // check if we need to update channel
+        if (task.channel !== req.body.task.channel) {
+            // update old channel
+            var oldChannelIndex = req.user.channels.findIndex(ch => ch.name === task.channel);
+            if (oldChannelIndex < 0) {
+                req.flash('error', 'Cannot find channel ' + task.channel);
+                return res.redirect('/dashboard');
+            }
+            if (req.user.channels[oldChannelIndex].count === 1) {
+                req.user.channels.splice(oldChannelIndex, 1);
+            } else {
+                req.user.channels[oldChannelIndex].count -= 1;
+            }
+            // update new channel
+            var newChannelIndex = req.user.channels.findIndex(ch => ch.name === req.body.task.channel);
+            if (newChannelIndex < 0) {
+                // need to create new channel
+                var newChannel = {
+                    name: req.body.task.channel,
+                    count: 1
+                };
+                req.user.channels.push(newChannel);
+            } else {
+                req.user.channels[newChannelIndex].count += 1;
+            }
+            req.user.save();
+        }
+        
+        task.name = req.body.task.name;
+        task.channel = req.body.task.channel;
+        task.due = req.body.task.due;
+        task.notes = req.body.task.notes;
+        task.save();
+        
+        console.log("*** " + req.user.username + ' Updated Task "' + task.name + '"');
+        // console.log(task.due);
+        // console.log(new Date());
+        // console.log(moment(task.due));
+        // console.log(moment());
+        req.flash('success', 'Successfully Updated "' + task.name + '"');
+        res.redirect('/charts?tab=' + task.channel);
     });
 });
 
@@ -102,15 +150,27 @@ router.get('/:id/archive', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
             req.flash('error', err.message);
-            res.redirect('/dashboard');
-        } else {
-            req.user.currentTasks.pull(task.id);
-            req.user.archives.push(task.id);
-            req.user.save();
-            console.log("*** " + req.user.username + ' Archived Task "' + task.name + '"');
-            req.flash('success', 'Successfully Archived "' + task.name + '"');
-            res.redirect('/charts?tab=' + task.channel);
+            return res.redirect('/dashboard');
         }
+        
+        var channelIndex = req.user.channels.findIndex(ch => ch.name === task.channel);
+        if (channelIndex < 0) {
+            req.flash('error', 'Cannot find channel' + task.channel);
+            return res.redirect('/dashboard');
+        }
+        
+        if (req.user.channels[channelIndex].count === 1) {
+            req.user.channels.splice(channelIndex, 1);
+        } else {
+            req.user.channels[channelIndex].count -= 1;
+        }
+        
+        req.user.currentTasks.pull(task.id);
+        req.user.archives.push(task.id);
+        req.user.save();
+        console.log("*** " + req.user.username + ' Archived Task "' + task.name + '"');
+        req.flash('success', 'Successfully Archived "' + task.name + '"');
+        res.redirect('/charts?tab=' + task.channel);
     });
 });
 

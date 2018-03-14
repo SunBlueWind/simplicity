@@ -21,125 +21,121 @@
         </ul> <!-- nav-tabs -->
       </div>
       
-      <% if (tasks.length <= 0) { %>
-        <p class='lead mx-auto mt-3'>Looks like you have no active tasks currently...</p>
-      <% } else { %>
-        <div class='tab-content'>
-          <!-- Display channels -->
-          <% channels.forEach(function(ch) { %>
-            <div id="<%= ch %>" class="tab-pane fade <% if(ch === tab){ %>show active<%}%>">
-              <div class='row'>
-                <% status.forEach(function(s) { %>
-                  <div class='col col-12 col-sm-3'>
-                    <!-- Display status headings -->
-                    <% if (s === status[0] ) { %>
-                      <p class='status-heading btn btn-primary'><%= s %></p>
-                    <% } %>
-                    <% if (s === status[1] ) { %>
-                      <p class='status-heading btn btn-warning'><%= s %></p>
-                    <% } %>
-                    <% if (s === status[2] ) { %>
-                      <p class='status-heading btn btn-success'><%= s %></p>
-                    <% } %>
-                    <% if (s === status[3] ) { %>
-                      <p class='status-heading btn btn-danger'><%= s %></p>
-                    <% } %>
-                    
-                    <% tasks.forEach(function(task) { %>
-                      <% if (task.channel === ch && task.status === s) { %>
-                        <div class='card mb-4 pb-1'>
-                          <!-- Display delete and edit buttons -->
-                          <span class='hide'>
-                            <a data-toggle="tooltip" data-placement="bottom" title="Delete" 
-                            href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto float-left">
-                              <i class="fas fa-trash-alt"></i>
+      <div class='tab-content'>
+        <!-- Display channels -->
+        <% channels.forEach(function(ch) { %>
+          <div id="<%= ch %>" class="tab-pane fade <% if(ch === tab){ %>show active<%}%>">
+            <div class='row'>
+              <% status.forEach(function(s) { %>
+                <div class='col col-12 col-sm-3'>
+                  <!-- Display status headings -->
+                  <% if (s === status[0] ) { %>
+                    <p class='status-heading btn btn-primary'><%= s %></p>
+                  <% } %>
+                  <% if (s === status[1] ) { %>
+                    <p class='status-heading btn btn-warning'><%= s %></p>
+                  <% } %>
+                  <% if (s === status[2] ) { %>
+                    <p class='status-heading btn btn-success'><%= s %></p>
+                  <% } %>
+                  <% if (s === status[3] ) { %>
+                    <p class='status-heading btn btn-danger'><%= s %></p>
+                  <% } %>
+                  
+                  <% tasks.forEach(function(task) { %>
+                    <% if (task.channel === ch && task.status === s) { %>
+                      <div class='card mb-4 pb-1'>
+                        <!-- Display delete and edit buttons -->
+                        <span class='hide'>
+                          <a data-toggle="tooltip" data-placement="bottom" title="Delete" 
+                          href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto float-left">
+                            <i class="fas fa-trash-alt"></i>
+                          </a>
+                          <!--Only display Archive button if Completed-->
+                          <% if (task.status === 'Completed') { %>
+                            <a data-toggle="tooltip" data-placement="bottom" title="Archive" 
+                            href="<%= task.id %>/archive" class="btn btn-light btn-sm mx-auto">
+                              <i class="fas fa-archive"></i>
                             </a>
-                            <!--Only display Archive button if Completed-->
-                            <% if (task.status === 'Completed') { %>
-                              <a data-toggle="tooltip" data-placement="bottom" title="Archive" 
-                              href="<%= task.id %>/archive" class="btn btn-light btn-sm mx-auto">
-                                <i class="fas fa-archive"></i>
-                              </a>
-                            <% } %>
-                            <a data-toggle="tooltip" data-placement="bottom" title="Edit" 
-                            href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto float-right">
-                              <i class="fas fa-edit"></i>
-                            </a>
-                          </span>
-                          
-                          <!-- card content -->
-                          <h5 class="card-title mt-2">
-                            <%= task.name %>
-                          </h5>
-                          <!-- display warning / danger colors -->
-                          <% if (moment(task.due).isBefore(moment())) { %>
-                            <p class="text-danger font-weight-bold">Due: <%= moment(task.due).fromNow() %></p>
-                          <% } else if (moment(task.due).isBefore(moment().add(24, 'hours'))) { %>
-                            <p class="text-warning font-weight-bold">Due: <%= moment(task.due).fromNow() %></p>
-                          <% } else { %>
-                            <p class="text-muted">Due: <%= moment(task.due).fromNow() %></p>
                           <% } %>
-                          <% if (task.notes) { %>
-                          <p class='card-text'>Notes: <%= task.notes %></p>
+                          <a data-toggle="tooltip" data-placement="bottom" title="Edit" 
+                          href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto float-right">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                        </span>
+                        
+                        <!-- card content -->
+                        <h5 class="card-title mt-2">
+                          <%= task.name %>
+                        </h5>
+                        <!-- display warning / danger colors -->
+                        <% if (moment(task.due).isBefore(moment())) { %>
+                          <p class="text-danger font-weight-bold">Due: <%= moment(task.due).fromNow() %></p>
+                        <% } else if (moment(task.due).isBefore(moment().add(24, 'hours'))) { %>
+                          <p class="text-warning font-weight-bold">Due: <%= moment(task.due).fromNow() %></p>
+                        <% } else { %>
+                          <p class="text-muted">Due: <%= moment(task.due).fromNow() %></p>
+                        <% } %>
+                        <% if (task.notes) { %>
+                        <p class='card-text'>Notes: <%= task.notes %></p>
+                        <% } %>
+                        <div class='button-group hide'>
+                          <% if (s !== status[0] ) { %>
+                            <a href="<%= task.id %>/todo" class="btn btn-outline-primary btn-sm my-auto">To Do</a>
                           <% } %>
-                          <div class='button-group hide'>
-                            <% if (s !== status[0] ) { %>
-                              <a href="<%= task.id %>/todo" class="btn btn-outline-primary btn-sm my-auto">To Do</a>
-                            <% } %>
-                            <% if (s !== status[1] ) { %>
-                             <a href="<%= task.id %>/inprogress" class="btn btn-outline-warning btn-sm my-auto">In Progress</a>
-                            <% } %>
-                            <% if (s !== status[2] ) { %>
-                              <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
-                            <% } %>
-                            <% if (s !== status[3] ) { %>
-                              <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
-                            <% } %>
-                          </div>
-                        </div> <!-- card -->
-                      <% } %>
-                    <% }); %> <!-- forEach(task) -->
-                  </div> <!-- col -->
-                <% }); %> <!-- forEach(s) -->
-              </div> <!-- row -->
-            </div> <!-- tab-pane -->
-          <% }); %> <!-- forEach(ch) -->
-          
-          <!--Display History-->
-          <div id='history' class='tab-pane fade mt-5'>
-            <% if (archives.length <= 0) { %>
-              <p class='lead mx-auto'>Looks like you have no archives currently...</p>
-            <% } else { %>
-              <table class='table table-striped' id='archiveTable'>
-                <thead class='thead-dark'>
+                          <% if (s !== status[1] ) { %>
+                           <a href="<%= task.id %>/inprogress" class="btn btn-outline-warning btn-sm my-auto">In Progress</a>
+                          <% } %>
+                          <% if (s !== status[2] ) { %>
+                            <a href="<%= task.id %>/completed" class="btn btn-outline-success btn-sm my-auto">Completed</a>
+                          <% } %>
+                          <% if (s !== status[3] ) { %>
+                            <a href="<%= task.id %>/stuck" class="btn btn-outline-danger btn-sm my-auto">Stuck</a>
+                          <% } %>
+                        </div>
+                      </div> <!-- card -->
+                    <% } %>
+                  <% }); %> <!-- forEach(task) -->
+                </div> <!-- col -->
+              <% }); %> <!-- forEach(s) -->
+            </div> <!-- row -->
+          </div> <!-- tab-pane -->
+        <% }); %> <!-- forEach(ch) -->
+        
+        <!--Display History-->
+        <div id='history' class='tab-pane fade mt-5'>
+          <% if (archives.length <= 0) { %>
+            <p class='lead mx-auto'>Looks like you have no archives currently...</p>
+          <% } else { %>
+            <table class='table table-striped' id='archiveTable'>
+              <thead class='thead-dark'>
+                <tr>
+                  <th scope='col'>Name</th>
+                  <th scope='col'>Completion Date</th>
+                  <th scope='col'>Due Date</th>
+                  <th scope='col'>Notes</th>
+                  <th scope='col'>Channel</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% archives.forEach(function(task) { %>
                   <tr>
-                    <th scope='col'>Name</th>
-                    <th scope='col'>Completion Date</th>
-                    <th scope='col'>Due Date</th>
-                    <th scope='col'>Notes</th>
-                    <th scope='col'>Channel</th>
+                    <th scope='row'><%= task.name %></th>
+                    <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
+                    <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
+                    <td><%= task.channel %></td>
+                    <% if (task.notes) { %>
+                      <td><%= task.notes %></td>
+                    <% } else {%>
+                      <td>N\A</td>
+                    <% } %>
                   </tr>
-                </thead>
-                <tbody>
-                  <% archives.forEach(function(task) { %>
-                    <tr>
-                      <th scope='row'><%= task.name %></th>
-                      <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
-                      <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
-                      <td><%= task.channel %></td>
-                      <% if (task.notes) { %>
-                        <td><%= task.notes %></td>
-                      <% } else {%>
-                        <td>N\A</td>
-                      <% } %>
-                    </tr>
-                  <% }); %>
-                </tbody>
-              </table>
-            <% } %>
-          </div> <!-- history -->
-        </div> <!-- tab-content -->
-      <% } %> <!-- else -->
+                <% }); %>
+              </tbody>
+            </table>
+          <% } %>
+        </div> <!-- history -->
+      </div> <!-- tab-content -->
     </div> <!-- row -->
 </div> <!-- container -->
 
