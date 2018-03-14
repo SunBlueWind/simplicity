@@ -28,7 +28,19 @@
                     <tbody>
                         <% tasks.forEach(function(task) { %>
                             <tr>
-                                <th scope='row'><%= moment(task.due).format('YYYY-MM-DD, kk:mm') %></th>
+                                <th scope='row'>
+                                    <form action='<%= task.id %>?_method=DELETE' method='POST'>
+                                        <button type='submit' data-toggle="tooltip" data-placement="bottom" title="Delete" 
+                                                class="btn btn-light btn-sm mr-auto float-left">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                    <%= moment(task.due).format('YYYY-MM-DD, kk:mm') %>
+                                    <a data-toggle="tooltip" data-placement="bottom" title="Edit" 
+                                      href="<%= task.id %>/edit" class="btn btn-light btn-sm ml-auto float-right">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </th>
                                 <td><%= task.name %></td>
                                 <td><%= task.status %></td>
                                 <td><%= task.channel %></td>

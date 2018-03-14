@@ -49,7 +49,7 @@ router.post('/new', middleware.isLoggedIn, function(req, res) {
 /////////////////////////////////////////////////
 // Delete route
 /////////////////////////////////////////////////
-router.get('/:id/delete', middleware.isLoggedIn, function(req, res) {
+router.delete('/:id', middleware.isLoggedIn, function(req, res) {
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
             req.flash('error', err.message);
@@ -96,7 +96,6 @@ router.get('/:id/edit', middleware.isLoggedIn, function(req, res) {
 });
 
 router.put('/:id', middleware.isLoggedIn, function(req, res) {
-    var newTask = req.body.task;
     Task.findById(req.params.id, function(err, task) {
         if (err || !task) {
             req.flash('error', err.message);

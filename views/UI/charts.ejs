@@ -47,10 +47,12 @@
                       <div class='card mb-4 pb-1'>
                         <!-- Display delete and edit buttons -->
                         <span class='hide'>
-                          <a data-toggle="tooltip" data-placement="bottom" title="Delete" 
-                          href="<%= task.id %>/delete" class="btn btn-light btn-sm mr-auto float-left">
-                            <i class="fas fa-trash-alt"></i>
-                          </a>
+                          <form action='<%= task.id %>?_method=DELETE' method='POST'>
+                            <button type='submit' data-toggle="tooltip" data-placement="bottom" title="Delete" 
+                                    class="btn btn-light btn-sm mr-auto float-left">
+                              <i class="fas fa-trash-alt"></i>
+                            </button>
+                          </form>
                           <!--Only display Archive button if Completed-->
                           <% if (task.status === 'Completed') { %>
                             <a data-toggle="tooltip" data-placement="bottom" title="Archive" 
