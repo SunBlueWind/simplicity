@@ -48,10 +48,12 @@
                         <!-- Display delete and edit buttons -->
                         <span class='hide'>
                           <form action='<%= task.id %>?_method=DELETE' method='POST'>
-                            <button type='submit' data-toggle="tooltip" data-placement="bottom" title="Delete" 
-                                    class="btn btn-light btn-sm mr-auto float-left">
-                              <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <span data-toggle="modal" data-target="#taskDeleteWarning">
+                              <button type='button' data-toggle="tooltip" data-placement="bottom" title="Delete" 
+                                      class="btn btn-light btn-sm mr-auto float-left" name='taskDeleteBtn'>
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </span>
                           </form>
                           <!--Only display Archive button if Completed-->
                           <% if (task.status === 'Completed') { %>
@@ -123,8 +125,8 @@
                 <% archives.forEach(function(task) { %>
                   <tr>
                     <th scope='row'><%= task.name %></th>
-                    <td><%= moment(task.completionDate).format('YYYY MMMM DD') %></td>
-                    <td><%= moment(task.due).format('YYYY MMMM DD') %></td>
+                    <td><%= moment(task.completionDate).format('YYYY-MM-DD') %></td>
+                    <td><%= moment(task.due).format('YYYY-MM-DD') %></td>
                     <td><%= task.channel %></td>
                     <% if (task.notes) { %>
                       <td><%= task.notes %></td>
@@ -138,6 +140,27 @@
           <% } %>
         </div> <!-- history -->
       </div> <!-- tab-content -->
+      
+      <!-- modal -->
+      <div class="modal fade" id="taskDeleteWarning" tabindex="-1" role="dialog" aria-labelledby="taskDeleteWarning" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel">Are you sure you want to delete the task?</h3>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <em class="text-muted">Warning: This action is irreversible</em>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+                      <button type="button" class="btn btn-sm btn-danger" id="modalDeleteBtn">Delete</button>
+                  </div>
+              </div>
+          </div>
+      </div> <!-- modal -->
     </div> <!-- row -->
 </div> <!-- container -->
 

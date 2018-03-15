@@ -22,6 +22,7 @@ router.get('/new', middleware.isLoggedIn, function(req, res) {
 
 router.post('/new', middleware.isLoggedIn, function(req, res) {
     var newTask = req.body.task;
+    newTask.due += 'T23:59:59';
     Task.create(newTask, function(err, task) {
         if (err || !task) {
             req.flash('error', err.message);
@@ -131,7 +132,7 @@ router.put('/:id', middleware.isLoggedIn, function(req, res) {
         
         task.name = req.body.task.name;
         task.channel = req.body.task.channel;
-        task.due = req.body.task.due;
+        task.due = req.body.task.due + 'T23:59:59';
         task.notes = req.body.task.notes;
         task.save();
         
