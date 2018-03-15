@@ -18,7 +18,7 @@
                         <!--    <option value="Personal">Personal</option>-->
                         <!--    <option value="Work">Work</option>-->
                         <!--</select>-->
-                        <input class='form-control' id='channel' name='task[channel]' list='channels' placeholder='Choose or Create Your Own'></input>
+                        <input class='form-control' id='channel' name='task[channel]' list='channels' placeholder='Choose or Create Your Own' required>
                         <datalist id='channels'>
                             <% channels.forEach(function(channel) { %>
                                 <option value='<%= channel.name %>'></option>
